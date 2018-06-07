@@ -1,0 +1,174 @@
+<!-- <header class="navbar navbar-dark bg-darkest width-100">
+    <span class="navbar-brand js-brand">LP</span>
+    <ul class="navbar-nav flex-row ml-md-auto align-items-center">
+        <li class="nav-item">
+            <span class="nav-link p-2 {{'active' if lang == 'cs'}} pipe-right js-lang">cs</span>
+        </li>
+        <li class="splitter"></li>
+        <li class="nav-item">
+            <span class="nav-link p-2 {{'active' if lang == 'en'}} js-lang">en</span>
+        </li>
+    </ul>
+</header> -->
+<canvas class="canvas" id="canvas">
+
+</canvas> <!--
+<div class="width-100 teaser in-app">
+    <h1 class="text-center teaser-text d-inline-block">{{teaserHeadline}}</h1>
+    <div class="sound">
+
+    </div>
+    <div class="scroll-downs">
+        <div class="mousey">
+            <div class="scroller"></div>
+        </div>
+    </div> -->
+<div class="particle-config">
+    <h2>{{particleConfig}}</h2>
+    <ul class="option-list from-group">
+        <li data-key="particles">
+            {{particles}}
+            <ul>
+                <li data-key="number" class="custom-control custom-range">
+                    <input data-key="value" id="particlesnumber" type="range" class="custom-control-range" min="0" max="600">
+                    <label for="particlesnumber">{{particleCount}}</label>
+                    <span class="value"></span>
+                </li>
+                <li data-key="color" class="custom-control custom-picker">
+                        <input data-key="value" type="text" />
+                    <label for="particlesnumber">{{particleColor}}</label>
+                    <span class="value"></span>
+                </li>
+                <li data-key="shape" class="custom-control">
+                    <label for="shape">{{particleShape}}</label>
+                    <select id="shape" class="custom-select" data-key="type">
+                        <option value="circle">{{particleCircle}}</option>
+                        <option value="edge">{{particleEdge}}</option>
+                        <option value="triangle">{{particleTriangle}}</option>
+                        <option value="polygon">{{particlePolygon}}</option>
+                    </select>
+                    <ul>
+                        <li data-key="polygon" class="custom-control custom-range">
+                                <input data-key="nb_sides" id="polygonsides" type="range" class="custom-control-range" min="3" max="10">
+                            <label for="polygonsides">{{polygonSides}}</label>
+                            <span class="value"></span>
+                        </li>
+                    </ul>
+                </li>
+                <li data-key="size">
+                    {{particleSize}}
+                    <ul>
+                        <li data-key="value" class="custom-control custom-range">
+                            <input id="particlesize" type="range" class="custom-control-range" min="0" max="500">
+                            <label for="particlesize">{{value}}</label>
+                            <span class="value"></span>
+                        </li>
+                        <li data-key="random" class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="randomcheck">
+                            <label class="custom-control-label" for="randomcheck">{{Random}}</label>
+                        </li>
+                    </ul>
+                </li>
+                <li data-key="opacity">
+                    {{particleOpaciy}}
+                    <ul>
+                        <li data-key="value" class="custom-control custom-range">
+                            <input id="particleOpacity" type="range" class="custom-control-range" min="0" max="1" step="0.01">
+                            <label for="particleOpacity">{{value}}</label>
+                            <span class="value"></span>
+                        </li>
+                        <li data-key="random" class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="randomopacity">
+                            <label class="custom-control-label" for="randomopacity">{{Random}}</label>
+                        </li>
+                    </ul>
+                </li>
+                <li data-key="line_linked">
+                    {{particleLines}}
+                    <ul>
+                        <li data-key="enable" class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="enablelink">
+                            <label class="custom-control-label" for="enablelink">{{Enable}}</label>
+                        </li>
+                        <li data-key="distance" class="custom-control custom-range">
+                            <input id="linkDistance" type="range" class="custom-control-range" min="0" max="500">
+                            <label for="linkDistance">{{linkDistance}}</label>
+                            <span class="value"></span>
+                        </li>
+                        <li data-key="color" class="custom-control custom-picker">
+                            <input type="text" id="particleColor"/>
+                            <label for="particleColor">{{particleColor}}</label>
+                            <span class="value"></span>
+                        </li>
+                        <li data-key="opacity" class="custom-control custom-range">
+                            <input id="linkOpacity" type="range" class="custom-control-range" min="0" max="1" step="0.01">
+                            <label for="linkOpacity">{{particleOpaciy}}</label>
+                            <span class="value"></span>
+                        </li>
+                        <li data-key="width" class="custom-control custom-range">
+                            <input id="linkWidth" type="range" class="custom-control-range" min="0" max="20">
+                            <label for="linkWidth">{{linkWidth}}</label>
+                            <span class="value"></span>
+                        </li>
+                    </ul>
+                </li>
+                <li data-key="move">
+                    {{particleMove}}
+                    <ul>
+                        <li data-key="enable" class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="enablemove">
+                            <label class="custom-control-label" for="enablemove">{{Enable}}</label>
+                        </li>
+                        <li data-key="speed" class="custom-control custom-range">
+                            <input id="moveSpeed" type="range" class="custom-control-range" min="0" max="200">
+                            <label for="moveSpeed">{{moveSpeed}}</label>
+                            <span class="value"></span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li data-key="interactivity.events">
+            {{interactivity}}
+            <ul>
+                <li data-key="onhover">
+                    {{intOnHover}}
+                    <ul>
+                        <li data-key="enable" class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="hoverenable">
+                            <label class="custom-control-label" for="hoverenable">{{Enable}}</label>
+                        </li>
+                        <li data-key="mode" class="custom-control">
+                            <label for="hovermode">{{initMode}}</label>
+                            <select id="hovermode" class="custom-select">
+                                <option value="repulse">{{initRepulse}}</option>
+                                <option value="grab">{{initGrab}}</option>
+                            </select>
+                        </li>
+                    </ul>
+                </li>
+                <li data-key="onclick">
+                    {{intOnClick}}
+                    <ul>
+                        <li data-key="enable" class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="clickenable">
+                            <label class="custom-control-label" for="clickenable">{{Enable}}</label>
+                        </li>
+                        <li data-key="mode" class="custom-control">
+                            <label for="hovermode">{{initMode}}</label>
+                            <select id="hovermode" class="custom-select">
+                                <option value="push">{{initPush}}</option>
+                                <option value="remove">{{initRemove}}</option>
+                                <option value="repulse">{{initRepulse}}</option>
+                            </select>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!-- </div>
+<div class="width-100 bg-darkest">
+
+</div> -->

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="main.css">
+
+    <title>Lukáš Procházka</title>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(){
+            document.getElementById("blackboard").style.display = "block";
+        });
+    </script>
+</head>
+
+<body>
+    <div id="blackboard" class="js-blackboard blackboard">
+        <div class="container-fluid bg-black width-100 teaser">
+            <h1 class="text-center teaser-text js-teaser-text glitchy-text d-inline-block" data-text="" data-cursor="▍"></h1>
+        </div>
+    </div>
+
+    <div class="width-100 height-100 noscroll-fixed js-app">
+        <div class="container-fluid height-100">
+            <div class="row align-items-center justify-content-center height-100">
+                <div class="col-12 col-md-9 col-xl-6 children-text-center">
+                    <h1 class="pb-4">Někde se vyskytla chyba / Something Went Wrong</h1>
+                    <h3 class="font-gray font-weight-light">JavaScript ES5 a vyšší není podporován, nebo povolen.</h3>
+                    <h3 class="font-gray font-weight-light">JavaScript ES5 is either disabled or not supported. </h3>
+                    <p class="pt-5">
+                        <a href="mailto:info@lukasprochazka.net" class="common-linkbutton">info@lukasprochazka.net</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

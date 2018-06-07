@@ -1,0 +1,495 @@
+@import "./bootstrap/bootstrap.scss";
+@import "./bootstrap-colorpicker.css";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&subset=cyrillic,cyrillic-ext,latin-ext');
+
+//variables
+$black: #010202;
+$gray-darkest: #0a0b0c;
+$gray-dark: #222629;
+$gray-light: #EAEAEA;
+$gray: #86888A;
+
+$gold: #AD947F;
+$gold-darker: #8e793e;
+//mixins
+@mixin textGlitch($name, $intensity, $pausedframes, $textColor, $background, $highlightColor1, $highlightColor2, $width, $height, $offset) {
+  
+    color: $textColor;
+    position: relative;
+    $steps: $intensity;
+    
+    // Ensure the @keyframes are generated at the root level
+    @at-root {
+      // We need two different ones
+      @for $i from 1 through 2 {
+        @keyframes #{$name}-anim-#{$i} {
+            //do
+          @for $i from 0 through $steps {
+            #{percentage($i*(1/($steps + $pausedframes)))} {
+              clip: rect(
+                random($height)+px,
+                $width+px,
+                random($height)+px,
+                0
+              );
+            }
+          }
+          //wait
+          @for $i from $steps through ($pausedframes + $steps) {
+            #{percentage($i*(1/($steps + $pausedframes)))} {
+              clip: rect(
+                0,
+                0,
+                0,
+                0
+              );
+            }
+          }
+        }
+      }
+    }
+    &:before,
+    &:after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      color: $textColor;
+      background: $background;
+      clip: rect(0, 0, 0, 0); 
+      overflow: hidden;
+    }
+    &:after {
+      left: $offset + px;
+      text-shadow: -1px 0 $highlightColor1;
+      animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+    }
+    &:before {
+      left: -$offset + px;
+      text-shadow: 1px 0 $highlightColor2; 
+      animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+    }
+    
+}
+
+//CSS
+.font-gold {
+    color: $gold;
+}
+.font-gold-darker {
+    color: $gold-darker;
+}
+.font-gray {
+    color: $gray;
+}
+.font-gray-light {
+    color: $gray-light;
+}
+.font-gray-dark {
+    color: $gray-dark;
+}
+.bg-dark {
+    background-color: $gray-dark !important;
+}
+.bg-darkest {
+    background-color: $gray-darkest !important;
+}
+.bg-black{
+    background-color: $black !important;
+}
+
+//own css
+html, body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    font-family: "Roboto";
+    font-size: 16px;
+    background-color: $black;
+    color: $gray-light;
+}
+.noscroll {
+    overflow: hidden;   
+}
+.noscroll-fixed {
+    @extend .noscroll;
+    position: fixed;
+    top: 0;
+}
+
+//universal height sets
+@for $i from 0 to 5 {
+    .height-#{$i * 25} {
+        height: 25% * $i;
+    }
+} 
+@for $i from 0 to 5 {
+    .height-min-#{$i * 25} {
+        min-height: 25% * $i;
+    }
+} 
+@for $i from 0 to 5 {
+    .width-#{$i * 25} {
+        width: 25% * $i;
+    }
+} 
+@for $i from 0 to 5 {
+    .width-min-#{$i * 25} {
+        min-width: 25% * $i;
+    }
+} 
+
+.children-text-center > * {
+    @extend .text-center;
+}
+
+.common-linkbutton {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid $gray-light;
+    color: $gray-light;
+    text-decoration: none !important;
+    background-color: transparent;
+    transition: all 0.30s ease-in-out;
+    &:hover {
+        background: $gray-light;
+        color: $gray-darkest;
+    }
+}
+
+.navbar-dark {
+    border-bottom: 1px solid $gray;
+}
+.nav-link {
+    cursor: pointer;
+    transition: all 0.30s ease-in-out;
+}
+.splitter {
+    height: 24px;
+    width: 1px;
+    background-color: $gray;
+    display: block;
+}
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+.teaser {
+    //display: flex;
+    //align-items: center;
+    height: 400px;
+    min-height: 100vh;
+    position: relative;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.in-app {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+.canvas {
+    height: 400px;
+    min-height: 100vh;
+    width: 100%;
+}
+.teaser-text {
+    // transform: rotate(90deg);
+    // white-space: nowrap;
+    // position: absolute !important;
+    // top: 50%;
+    // left: 50%;
+    // transform: translateX(-50%) translateY(-90%);
+
+    margin-bottom: 100px;
+
+    @include media-breakpoint-up(sm) {
+        font-size: 6rem;
+    }
+}
+ .blackboard {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+}
+
+.cursor::after {
+    content: "";
+    animation: 1s blink step-end infinite;
+    display: inline-block;
+    height: 2.2rem;
+    width: 1.25rem;
+    background-color: $gray-light;
+    transform: translateY(10%);
+    @include media-breakpoint-up(sm) {
+        height: 5rem;
+        width: 3rem;
+    }
+    animation: 1.2s cursor-blink infinite step-end;
+}
+//mouse scroll
+.scroll-downs {
+    position: absolute;
+    bottom: 24px;
+    margin: auto;
+    width :34px;
+    height: 55px;
+    cursor: pointer;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &:hover {
+        .mousey {
+            background-color: $gray-light;
+        }
+        .scroller {
+            background-color: $black;
+        }
+    }
+  }
+  .mousey {
+    width: 3px;
+    padding: 6px 10px;
+    height: 25px;
+    border: 2px solid $gray-light;;
+    border-radius: 25px;
+    opacity: 1;
+    box-sizing: content-box;
+    transition: all 0.30s ease-in-out;
+  }
+  .scroller {
+    width: 3px;
+    height: 10px;
+    border-radius: 25%;
+    background-color: white;
+    animation-name: scroll;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(.15,.41,.69,.94);
+    animation-iteration-count: infinite;
+    transition: all 0.30s ease-in-out;
+  }
+.glitchy-text {
+    background-color: $black;
+
+    @include textGlitch("glitchy-text", 10, 0, $gray-light, $black, red, blue, 600, 115,2);
+}
+.particle-config {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 200;
+    h2 {
+        font-weight: 200;
+        font-size: 32px;
+        margin: 0;
+        text-align: right;
+    }
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        li {
+            padding: 0;
+            margin: 0;
+            padding-bottom: 4px;
+            padding-top: 4px;
+        }
+        ul {
+            margin-top: 4px;
+            padding-left: 16px;
+        }
+    }
+    .custom-control-label {
+        transition: all 0.15s ease-in-out;
+        &::before, &::after {
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            left: auto;
+            background-color: transparent;
+            border: 1px solid $gray-light;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+        }
+        &:hover {
+            &::before, &::after {
+                border-width: 3px;
+            }
+        }
+    }
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: transparent;
+    }
+    .custom-select {
+        width: auto;
+    }
+    .custom-control-range {
+        -webkit-appearance: none; 
+        background: transparent; 
+        &:focus {
+            outline: none; 
+        }
+        //thumb
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: $gray-light;
+            border: 3px solid $gray-light;
+            border-radius: 50%;
+            margin-top: -6px;
+            cursor: pointer;
+        }
+        &::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: $gray-light;
+            border: 3px solid $gray-light;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        &::-ms-thumb {
+            width: 16px;
+            height: 16px;
+            background: $gray-light;
+            border: 3px solid $gray-light;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        //line
+        &::-webkit-slider-runnable-track  {
+            height: 2px;
+            background: $gray-light;
+            border-radius: 2px;
+        }
+        &::-moz-range-track {
+            height: 2px;
+            background: $gray-light;
+            border-radius: 2px;
+        }
+        &::-moz-range-track {
+            height: 2px;
+            background: $gray-light;
+            border-radius: 2px;
+        }
+        &::-ms-track{
+            height: 2px;
+            background: $gray-light;
+            border-radius: 2px;
+        }
+    }
+    .custom-control {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        input, select {
+            order: 2;
+            margin: 0;
+            padding: 0;
+            margin-right: 8px;
+            margin-left: auto;
+            height: auto;
+            line-height: inherit;
+            background-color: transparent;
+            border-radius: 3px;
+            border: 1px solid $gray-light;
+            color: $gray-light;
+            background-image: none;
+        }
+        select {
+            option {
+                background-color: $black;
+                color: white;
+                border: 1px solid $gray-light;
+                &:hover {
+                    color: $black;
+                    background-color: $gray-light;
+                }
+            }
+        }
+        label {
+            order: 1;
+            margin: 0;
+            margin: 0;
+            margin-right: 8px;
+        }
+        .value {
+            order: 3;
+            margin: 0;
+            margin-right: 8px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: middle;
+            text-align: center;
+        }
+        ul {
+            order: 4;
+        }
+    }
+    .custom-picker {
+        position: relative;
+        input {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            pointer-events:none;
+            cursor: pointer;
+            margin: 0;
+            opacity: 0;
+        }
+        .value {
+            border: 1px solid $gray-light;
+            border-radius: 3px;
+            margin-left: auto;
+            cursor: pointer;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//animations
+@keyframes cursor-blink {
+    from, to {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes scroll {
+    0% { opacity: 0; }
+    10% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(8px); opacity: 0;}
+  }
