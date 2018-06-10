@@ -32457,7 +32457,15 @@ const pJS = function (tag_id, params) {
     pJS.fn.vendors.start();
 
   };
-  this.particlesRefresh = pJS.fn.particlesRefresh;
+  this.particlesStop = function() {
+    cancelRequestAnimFrame(pJS.fn.checkAnimFrame);
+    cancelRequestAnimFrame(pJS.fn.drawAnimFrame);
+    pJS.tmp.source_svg = undefined;
+    pJS.tmp.img_obj = undefined;
+    pJS.tmp.count_svg = 0;
+    pJS.fn.particlesEmpty();
+    pJS.fn.canvasClear();
+  };
 
   /* ---------- pJS functions - particles interaction ------------ */
 
@@ -33903,7 +33911,7 @@ var contextPromise = context.getLocalization("assets/");
         app.rednerContent("app.njk", context.localizedContext);
         //app do 
         app.pJSParams = _particlesjsConfig2.default;
-        app.spawnParticles("canvas");
+        app.spawnParticles((0, _jquery2.default)(".canvas"));
         app.loadParticleConfigurator((0, _jquery2.default)(".particle-config"));
 
         //start text animation
@@ -33968,7 +33976,7 @@ var contextPromise = context.getLocalization("assets/");
             $tar.siblings(".value").css("background-color", _val);
         }
     });
-    $body.on("change", ".particle-config input", function (e) {
+    $body.on("change", ".particle-config input, .particle-config select", function (e) {
         var $tar = (0, _jquery2.default)(e.target);
         var val = null;
         if ($tar.attr("type") == "range") {
@@ -33977,6 +33985,8 @@ var contextPromise = context.getLocalization("assets/");
         } else if ($tar.parent().hasClass("custom-picker")) {
             val = $tar.val();
             $tar.siblings(".value").css("background-color", val);
+        } else if ($tar.is("select")) {
+            val = $tar.val();
         }
         if (val != null) {
             var adress = app.getObjectAdress($tar, "data-key");
@@ -33984,7 +33994,7 @@ var contextPromise = context.getLocalization("assets/");
             console.log(app.pJSParams);
             console.log(adress);
             console.log(val);
-            app.respawnParticles();
+            app.respawnParticles((0, _jquery2.default)(".canvas"));
         }
     });
 });
@@ -34021,6 +34031,10 @@ var _StaticHelpers = __webpack_require__(/*! ./StaticHelpers.js */ "./src/js/Sta
 
 var _StaticHelpers2 = _interopRequireDefault(_StaticHelpers);
 
+var _SoundBoard = __webpack_require__(/*! ./SoundBoard.js */ "./src/js/SoundBoard.js");
+
+var _SoundBoard2 = _interopRequireDefault(_SoundBoard);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34037,24 +34051,50 @@ var App = function () {
         this.pJSParams = new Object();
     }
 
+    /**
+     * @param  {JQuery} $tag
+     */
+
+
     _createClass(App, [{
         key: 'spawnParticles',
-        value: function spawnParticles(tagid) {
-            this.pJSRef = new _particles.pJS(tagid, this.pJSParams);
+        value: function spawnParticles($tag) {
+            $tag.append("<canvas id='canvas'></canvas>");
+            this.pJSRef = new _particles.pJS("canvas", this.pJSParams);
         }
+        /**
+         * @param  {JQuery} $tag
+         */
+
+    }, {
+        key: 'removeParticles',
+        value: function removeParticles($tag) {
+            $tag.empty();
+            this.pJSRef.particlesStop();
+            this.pJSRef = null;
+        }
+        /**
+         * @param  {JQuery} $tag
+         */
+
     }, {
         key: 'respawnParticles',
-        value: function respawnParticles() {
-            this.pJSRef.setParams(this.pJSParams);
-            this.pJSRef.particlesRefresh();
+        value: function respawnParticles($tag) {
+            this.removeParticles($tag);
+            this.spawnParticles($tag);
         }
+
+        /**
+         * @param  {Object} config
+         */
+
     }, {
         key: 'loadParticleConfigurator',
         value: function loadParticleConfigurator(config) {
             var _this = this;
 
             var $el = _StaticHelpers2.default.ensureJquery(config);
-            var $inputs = $el.find("input");
+            var $inputs = $el.find("input, select");
             $inputs.each(function (i, el) {
                 var $self = (0, _jquery2.default)(el);
                 var adress = _this.getObjectAdress($self, "data-key");
@@ -34068,6 +34108,12 @@ var App = function () {
                 }
             });
         }
+
+        /**
+         * @param  {JQuery} $obj
+         * @param  {string} key
+         */
+
     }, {
         key: 'getObjectAdress',
         value: function getObjectAdress($obj, key) {
@@ -34081,10 +34127,14 @@ var App = function () {
             });
             return adressAr.join(".");
         }
+        /**
+         * @param  {SoundBoard} board
+         */
+
     }, {
         key: 'loadSoundBoard',
         value: function loadSoundBoard(board) {
-            if (board instanceof SoundBoard) {
+            if (board instanceof _SoundBoard2.default) {
                 this.soundBoard = board;
             } else {
                 throw new Error("Not a soundboard");
@@ -34571,7 +34621,7 @@ exports.default = {
     },
     "line_linked": {
       "enable": true,
-      "distance": 500,
+      "distance": 120,
       "color": "#eaeaea",
       "opacity": 0.2,
       "width": 1

@@ -40,7 +40,7 @@ $(() => {
         app.rednerContent("app.njk", context.localizedContext);
         //app do 
         app.pJSParams = Params;
-        app.spawnParticles("canvas");
+        app.spawnParticles($(".canvas"));
         app.loadParticleConfigurator($(".particle-config"));
 
         //start text animation
@@ -107,7 +107,7 @@ $(() => {
             $tar.siblings(".value").css("background-color", val);
         }
     });
-    $body.on("change", ".particle-config input", (e)=>{
+    $body.on("change", ".particle-config input, .particle-config select", (e)=>{
         let $tar = $(e.target);
         let val = null;
         if ($tar.attr("type") == "range") {
@@ -116,6 +116,8 @@ $(() => {
         } else if ($tar.parent().hasClass("custom-picker")) {
             val = $tar.val();
             $tar.siblings(".value").css("background-color", val);
+        } else if ($tar.is("select")) {
+            val = $tar.val();
         }
         if (val != null) {
             let adress = app.getObjectAdress($tar, "data-key");
@@ -123,7 +125,7 @@ $(() => {
             console.log(app.pJSParams);
             console.log(adress);
             console.log(val);
-            app.respawnParticles();
+            app.respawnParticles($(".canvas"));
         }
     });
     
